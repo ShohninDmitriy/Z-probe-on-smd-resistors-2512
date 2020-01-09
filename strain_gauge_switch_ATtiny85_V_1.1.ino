@@ -1,17 +1,17 @@
-// CPU ATtiny 85 , clock internal 8MHz
-// HX711 library: https://github.com/bogde/HX711
+// CPU ATtiny 85 , clock internal 16MHz
 // HX711.DOUT - вывод # A3
 // HX711.PD_SCK - вывод # A2
-
-#include <HX711.h>
+#include "HX711.h"
 #define ledPin 0   //Pin indicator LED
 #define switchPin 2 //Switch pin
-HX711 scale(A3,A2);
+const int LOADCELL_DOUT_PIN = 3;
+const int LOADCELL_SCK_PIN = 4;
 HX711 scale;
 
-void setup() { 
+void setup() {
+ scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN); 
  pinMode(ledPin, OUTPUT);
- scale.set_scale(15000.f);//This parameter is responsible for the sensor sensitivity. The best results for values ​​from 10000.f to 30000.f
+ scale.set_scale(6000.f);//This parameter is responsible for the sensor sensitivity. The best results for values ​​from 4000.f to 20000.f
  scale.tare(1); 
 }
 
@@ -23,7 +23,7 @@ void loop() {
       digitalWrite(ledPin, HIGH);
       pinMode(switchPin, OUTPUT); 
       digitalWrite(switchPin, LOW);//Pull the switch pin to ground
-      delay(50);
+      delay(20);
       scale.tare(1);
   }
   else
